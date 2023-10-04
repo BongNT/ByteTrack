@@ -35,7 +35,7 @@ if __name__ == '__main__':
         for seq in sorted(seqs):
             if '.DS_Store' in seq:
                 continue
-            if 'mot' in DATA_PATH and (split != 'test' and not ('FRCNN' in seq)):
+            if 'mot' in DATA_PATH and (split not in ["train", "test"] and not ('FRCNN' in seq)):
                 continue
             video_cnt += 1  # video sequence number.
             out['videos'].append({'id': video_cnt, 'file_name': seq})
@@ -65,10 +65,10 @@ if __name__ == '__main__':
                               'height': height, 'width': width}
                 out['images'].append(image_info)
             print('{}: {} images'.format(seq, num_images))
-            if split != 'test':
+            if split in ["train", "test"]:
                 det_path = os.path.join(seq_path, 'det/det.txt')
                 anns = np.loadtxt(ann_path, dtype=np.float32, delimiter=',')
-                dets = np.loadtxt(det_path, dtype=np.float32, delimiter=',')
+                # dets = np.loadtxt(det_path, dtype=np.float32, delimiter=',')
                 if CREATE_SPLITTED_ANN and ('half' in split):
                     anns_out = np.array([anns[i] for i in range(anns.shape[0])
                                          if int(anns[i][0]) - 1 >= image_range[0] and
